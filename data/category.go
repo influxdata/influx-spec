@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -20,10 +19,10 @@ import (
 )
 
 func GetDataDirs(root, pattern string) []string {
-	var specs = []string{}
+	var specs []string
 
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.Name() == "data.lineprotocol" {
+		if !info.IsDir() && info.Name() == "data.lineprotocol" {
 			specs = append(specs, filepath.Dir(path))
 		}
 		return nil
@@ -33,7 +32,7 @@ func GetDataDirs(root, pattern string) []string {
 }
 
 func NewCategories(dirs []string) []spec.Spec {
-	cats := []spec.Spec{}
+	var cats []spec.Spec
 	for _, dir := range dirs {
 		cats = append(cats, NewCategory(dir))
 	}
@@ -81,6 +80,7 @@ func (c *Category) Seed(cfg write.ClientConfig) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	defer f.Close()
 
 	r := bufio.NewReader(f)
 
@@ -117,7 +117,6 @@ func (c *Category) Seed(cfg write.ClientConfig) (int, error) {
 }
 
 func (c *Category) Test(cfg write.ClientConfig) error {
-
 	for _, s := range c.specs {
 		err := s.Test(cfg)
 		if err != nil {
@@ -142,8 +141,12 @@ func (s *specification) Seed(cfg write.ClientConfig) error {
 }
 
 func (s *specification) Test(cfg write.ClientConfig) error {
-
 	q, err := ioutil.ReadFile(s.QueryFile)
+	if err != nil {
+		return err
+	}
+
+	exp, err := ioutil.ReadFile(s.ResultFile)
 	if err != nil {
 		return err
 	}
@@ -160,39 +163,25 @@ func (s *specification) Test(cfg write.ClientConfig) error {
 
 	got, err := ioutil.ReadAll(resp.Body)
 
-	e, err := os.Open(s.ResultFile)
-	if err != nil {
-		return err
-	}
-	exp, err := ioutil.ReadAll(e)
-	if err != nil {
-		return err
-	}
-
-	eq, err := JSONEqual(bytes.NewReader(exp), bytes.NewReader(got))
+	eq, err := JSONEqual(exp, got)
 	if err != nil {
 		return err
 	}
 
 	if !eq {
-		if err != nil {
-			return err
-		}
-		return errors.New(fmt.Sprintf("expected:\n%v\vgot:\n%v\n", string(exp), string(got)))
+		return fmt.Errorf("expected:\n%s\vgot:\n%s\n", exp, got)
 	}
 
 	return nil
 }
 
-func JSONEqual(a, b io.Reader) (bool, error) {
-	var j, j2 interface{}
-	d := json.NewDecoder(a)
-	if err := d.Decode(&j); err != nil {
+func JSONEqual(l, r []byte) (bool, error) {
+	var li, ri interface{}
+	if err := json.Unmarshal(l, &li); err != nil {
 		return false, err
 	}
-	d = json.NewDecoder(b)
-	if err := d.Decode(&j2); err != nil {
+	if err := json.Unmarshal(r, &ri); err != nil {
 		return false, err
 	}
-	return reflect.DeepEqual(j2, j), nil
+	return reflect.DeepEqual(li, ri), nil
 }
