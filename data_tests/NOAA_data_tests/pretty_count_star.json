@@ -1,0 +1,21 @@
+{
+  "results": [
+    {
+      "series": [
+        {
+          "name": "average_temperature",
+          "columns": [
+            "time",
+            "count_degrees"
+          ],
+          "values": [
+            [
+              0,
+              15258
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
