@@ -119,11 +119,11 @@ func (c *Category) Seed(cfg write.ClientConfig) (int, error) {
 	}
 }
 
-func (c *Category) Test(cfg write.ClientConfig) error {
+func (c *Category) Test(cfg write.ClientConfig) (err error) {
 	for _, s := range c.specs {
-		err := s.Test(cfg)
+		err = s.Test(cfg)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Fprint(os.Stderr, err)
 		}
 	}
 
@@ -147,6 +147,10 @@ func (s *specification) Name() string {
 }
 
 func (s *specification) Seed(cfg write.ClientConfig) error {
+	return nil
+}
+
+func (s *specification) Teardown(cfg write.ClientConfig) error {
 	return nil
 }
 
@@ -179,7 +183,7 @@ func (s *specification) Test(cfg write.ClientConfig) error {
 	}
 
 	if !eq {
-		return fmt.Errorf("expected:\n%s\vgot:\n%s\n", exp, got)
+		return fmt.Errorf("Query: %v\nExpected: \n%s\vGot: \n%s\n", string(q), exp, got)
 	}
 
 	return nil
