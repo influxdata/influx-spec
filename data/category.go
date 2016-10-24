@@ -18,7 +18,7 @@ import (
 	"github.com/influxdata/influx-stress/write"
 )
 
-func GetDataDirs(root, pattern string) []string {
+func GetDataDirs(root string) []string {
 	var specs []string
 
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -31,10 +31,13 @@ func GetDataDirs(root, pattern string) []string {
 	return specs
 }
 
-func NewCategories(dirs []string) []spec.Spec {
+func NewCategories(dirs []string, filter string) []spec.Spec {
 	var cats []spec.Spec
 	for _, dir := range dirs {
-		cats = append(cats, NewCategory(dir))
+		cat := NewCategory(dir)
+		if strings.Contains(cat.name, filter) {
+			cats = append(cats, cat)
+		}
 	}
 	return cats
 }
@@ -123,6 +126,13 @@ func (c *Category) Test(cfg write.ClientConfig) error {
 			fmt.Println(err)
 		}
 	}
+
+	return nil
+}
+
+func (c *Category) Teardown(cfg write.ClientConfig) error {
+	client := write.NewClient(cfg)
+	client.Create(fmt.Sprintf("DROP DATABASE %v", cfg.Database))
 
 	return nil
 }
