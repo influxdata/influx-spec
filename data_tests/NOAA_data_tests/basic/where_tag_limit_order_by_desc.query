@@ -1,0 +1,1 @@
+SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' ORDER BY time DESC LIMIT 5

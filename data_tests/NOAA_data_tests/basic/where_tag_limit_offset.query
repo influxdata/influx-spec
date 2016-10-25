@@ -1,0 +1,1 @@
+SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'coyote_creek' LIMIT 3 OFFSET 3

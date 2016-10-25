@@ -1,0 +1,1 @@
+{"results":[{"series":[{"name":"h2o_feet","tags":{"location":"coyote_creek"},"columns":["time","mode"],"values":[[1439856000000000000,7.5]]},{"name":"h2o_feet","tags":{"location":"santa_monica"},"columns":["time","mode"],"values":[[1439856000000000000,2.028]]}]}]}

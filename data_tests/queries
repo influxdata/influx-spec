@@ -26,11 +26,8 @@ SELECT MEAN("water_level") FROM "h2o_feet" GROUP BY "location"
 
 SELECT MEAN("index") FROM "h2o_quality" GROUP BY *
 
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND "location"='coyote_creek' GROUP BY time(3d)
 
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND "location"='coyote_creek' GROUP BY time(3d,1d)
 
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND "location"='coyote_creek' GROUP BY time(3d,-2d)
 
 SELECT MEAN("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(6h)
 
@@ -40,31 +37,15 @@ SELECT MEAN("water_level") FROM h2o_feet WHERE time >= '2015-08-18' AND time < '
 
 SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d) fill(none)
 
-SELECT "water_level" FROM "h2o_feet" GROUP BY * LIMIT 3
-
 SELECT "water_level" FROM "h2o_feet" GROUP BY * SLIMIT 1
-
-SELECT "water_level" FROM "h2o_feet" GROUP BY * LIMIT 3 SLIMIT 1
-
-SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' LIMIT 5
-
-SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica' ORDER BY time DESC LIMIT 5
-
-SELECT "water_level" FROM "h2o_feet" GROUP BY "location" ORDER BY time DESC LIMIT 5
-
-SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'coyote_creek' LIMIT 3
-
-SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'coyote_creek' LIMIT 3 OFFSET 3
-
-SELECT "water_level" FROM "h2o_feet" GROUP BY * LIMIT 3 SLIMIT 1
-
-SELECT "water_level" FROM "h2o_feet" GROUP BY * LIMIT 3 SLIMIT 1 SOFFSET 1
 
 SELECT MEAN("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(24h) fill(none); SELECT COUNT("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(24h) fill(80)
 
 SELECT MEAN("water_level") FROM "h2o_feet"
 
 SELECT MEAN("water_level") FROM "h2o_feet" WHERE "location" = 'coyote_creek'
+
+
 
 SELECT "water_level" FROM "h2o_feet" WHERE time > '2015-08-18 23:00:01.232000000' AND time < '2015-09-19'
 
@@ -96,143 +77,19 @@ SELECT * FROM "h2o_feet" WHERE ("location" =~ /.*y.*/ OR "location" =~ /.*m.*/) 
 
 SELECT * FROM "h2o_feet" WHERE "location" =~ /[ym]/ AND "water_level" > 0 LIMIT 4
 
-SHOW SERIES
 
-SHOW SERIES FROM "h2o_quality"
 
-SHOW SERIES FROM "h2o_quality" WHERE "location" = 'coyote_creek'
-
-SHOW MEASUREMENTS
-
-SHOW MEASUREMENTS WHERE "randtag" = '1'
-
-SHOW MEASUREMENTS WHERE "randtag" =~ /\d/
-
-SHOW MEASUREMENTS WITH MEASUREMENT =~ /h2o.*/
-
-SHOW TAG KEYS
-
-SHOW TAG KEYS FROM "h2o_temperature"
-
-SHOW TAG VALUES WITH KEY = "randtag"
-
-SHOW TAG VALUES WITH KEY IN ("location","randtag") WHERE "randtag" =~ /./
-
-SHOW TAG VALUES WITH KEY !~ /.*c.*/
-
-SHOW TAG VALUES FROM "average_temperature" WITH KEY = "randtag"
-
-SHOW FIELD KEYS
-
-SHOW FIELD KEYS FROM "h2o_feet"
-
-SELECT COUNT("water_level") FROM "h2o_feet"
-
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-09-18T17:00:00Z' GROUP BY time(4d)
-
-SELECT COUNT(*) FROM "h2o_feet"
-
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-09-18T21:41:00Z' AND time <= '2015-09-18T22:41:00Z' GROUP BY time(30m)
-
-SELECT COUNT("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-09-18T21:41:00Z' AND time <= '2015-09-18T22:41:00Z' GROUP BY time(30m) fill(none)
-
-SELECT DISTINCT("level description") FROM "h2o_feet"
-
-SELECT DISTINCT("level description") FROM "h2o_feet" GROUP BY "location"
-
-SELECT COUNT(DISTINCT("level description")) FROM "h2o_feet" GROUP BY "location"
-
-SELECT DISTINCT(*) FROM "h2o_feet" LIMIT 5
-
-SELECT MEAN("water_level") FROM "h2o_feet"
-
-SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-09-18T17:00:00Z' GROUP BY time(4d)
-
-SELECT MEAN(*) FROM "h2o_feet"
-
-SELECT MEDIAN("water_level") FROM "h2o_feet"
-
-SELECT MEDIAN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY "location"
-
-SELECT MEDIAN(*) FROM "h2o_feet"
-
-SELECT MODE("water_level") FROM "h2o_feet"
-
-SELECT MODE("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY "location"
-
-SELECT SPREAD("water_level") FROM "h2o_feet"
-
-SELECT SPREAD("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-09-18T17:00:00Z' AND time < '2015-09-18T20:30:00Z' GROUP BY time(30m)
-
-SELECT SPREAD(*) FROM "h2o_feet"
-
-SELECT SUM("water_level") FROM "h2o_feet"
-
-SELECT SUM("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-09-18T17:00:00Z' GROUP BY time(5d)
-
-SELECT SUM(*) FROM "h2o_feet"
 
 SELECT STDDEV("water_level") FROM "h2o_feet"
 
 SELECT STDDEV("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' and time < '2015-09-18T12:06:00Z' GROUP BY time(1w), "location"
 
-SELECT BOTTOM("water_level",3) FROM "h2o_feet"
 
-SELECT BOTTOM("water_level",3),"location" FROM "h2o_feet"
+SELECT MOVING_AVERAGE("water_level",2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z'
 
-SELECT BOTTOM("water_level","location",2) FROM "h2o_feet"
+SELECT MOVING_AVERAGE(MIN("water_level"),2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
 
-SELECT BOTTOM("water_level","location",3) FROM "h2o_feet"
 
-SELECT BOTTOM("water_level","location",1) FROM "h2o_feet"
-
-SELECT BOTTOM("water_level",2) FROM "h2o_feet" WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' GROUP BY "location"
-
-SELECT BOTTOM("water_level",2) FROM "h2o_feet" WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' AND "location" = 'santa_monica'
-
-SELECT FIRST("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica'
-
-SELECT FIRST("water_level"),"location" FROM "h2o_feet" WHERE time >= '2015-08-18T00:42:00Z' and time <= '2015-08-18T00:54:00Z'
-
-SELECT FIRST("water_level") FROM "h2o_feet" GROUP BY "location"
-
-SELECT LAST("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica'
-
-SELECT LAST("water_level"),"location" FROM "h2o_feet" WHERE time >= '2015-08-18T00:42:00Z' and time <= '2015-08-18T00:54:00Z'
-
-SELECT LAST("water_level") FROM "h2o_feet" GROUP BY "location"
-
-SELECT MAX("water_level") FROM "h2o_feet"
-
-SELECT MAX("water_level"),"location" FROM "h2o_feet"
-
-SELECT MAX("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:54:00Z' GROUP BY time(12m), "location"
-
-SELECT MIN("water_level") FROM "h2o_feet"
-
-SELECT MIN("water_level"),"location" FROM "h2o_feet"
-
-SELECT MIN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:54:00Z' GROUP BY time(12m), "location"
-
-SELECT PERCENTILE("water_level",5) FROM "h2o_feet" WHERE "location" = 'coyote_creek'
-
-SELECT PERCENTILE("water_level",5),"location" FROM "h2o_feet"
-
-SELECT PERCENTILE("water_level", 100) FROM "h2o_feet" GROUP BY "location"
-
-SELECT TOP("water_level",3) FROM "h2o_feet"
-
-SELECT TOP("water_level",3),"location" FROM "h2o_feet"
-
-SELECT TOP("water_level","location",2) FROM "h2o_feet"
-
-SELECT TOP("water_level","location",3) FROM "h2o_feet"
-
-SELECT TOP("water_level","location",1) FROM "h2o_feet"
-
-SELECT TOP("water_level",2) FROM "h2o_feet" WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' GROUP BY "location"
-
-SELECT TOP("water_level",2) FROM "h2o_feet" WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' AND "location" = 'santa_monica'
 
 SELECT DERIVATIVE("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' LIMIT 5
 
@@ -244,22 +101,14 @@ SELECT DERIVATIVE(MAX("water_level")) FROM "h2o_feet" WHERE "location" = 'santa_
 
 SELECT DERIVATIVE(SUM("water_level"),6m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(18m)
 
-SELECT DIFFERENCE("water_level") FROM "h2o_feet" WHERE "location"='santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z'
 
-SELECT DIFFERENCE(MIN("water_level")) FROM "h2o_feet" WHERE "location"='santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
 
-SELECT MIN("water_level") FROM "h2o_feet" WHERE "location"='santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
 
-SELECT ELAPSED("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:24:00Z'
+SELECT PERCENTILE("water_level",5) FROM "h2o_feet" WHERE "location" = 'coyote_creek'
 
-SELECT ELAPSED("water_level",1m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:24:00Z'
+SELECT PERCENTILE("water_level",5),"location" FROM "h2o_feet"
 
-SELECT ELAPSED("water_level",1h) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:24:00Z'
+SELECT PERCENTILE("water_level", 100) FROM "h2o_feet" GROUP BY "location"
 
-SELECT MOVING_AVERAGE("water_level",2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z'
-
-SELECT MOVING_AVERAGE(MIN("water_level"),2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
-
-SELECT MIN("water_level"), MAX("water_level") FROM "h2o_feet"
 
 SELECT MEAN("water_level") AS "dream_name" FROM "h2o_feet"

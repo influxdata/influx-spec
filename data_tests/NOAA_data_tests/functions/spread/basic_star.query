@@ -1,0 +1,1 @@
+SELECT SPREAD(*) FROM "h2o_feet"
