@@ -133,7 +133,7 @@ func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 
 // Test runs each of the specifications in the Suite. If an error is
 // encountered, then the error is written to stderr.
-func (c *Suite) Test(cfg write.ClientConfig) (rs spec.Results, err error) {
+func (c *Suite) Test(cfg write.ClientConfig) (rs []spec.Result, err error) {
 	for _, s := range c.specs {
 		r, err := s.Test(cfg)
 		if err != nil {
@@ -169,7 +169,7 @@ func (s *specification) Teardown(cfg write.ClientConfig) error {
 	return nil
 }
 
-func (s *specification) Test(cfg write.ClientConfig) (spec.Results, error) {
+func (s *specification) Test(cfg write.ClientConfig) ([]spec.Result, error) {
 	q, err := ioutil.ReadFile(s.QueryFile)
 	if err != nil {
 		return nil, err
@@ -204,7 +204,7 @@ func (s *specification) Test(cfg write.ClientConfig) (spec.Results, error) {
 		Got:         string(got),
 	}
 
-	return spec.Results{r}, nil
+	return []spec.Result{r}, nil
 }
 
 // JSONEqual checks to see if two byte slices encode the same
