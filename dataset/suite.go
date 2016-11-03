@@ -34,6 +34,7 @@ func GetDatasetDirs(root string) []string {
 	return specs
 }
 
+// NewSuites creates a slice of spec.Specs for each directory passed in as dirs
 func NewSuites(dirs []string, filter string) []spec.Spec {
 	var cats []spec.Spec
 	for _, dir := range dirs {
@@ -45,6 +46,8 @@ func NewSuites(dirs []string, filter string) []spec.Spec {
 	return cats
 }
 
+// NewSuite walks the direcory starting at `dir` adding pairs of files
+// (*.query and *.json). If a pair is found, then it is added to the suite.
 func NewSuite(dir string) *Suite {
 	c := &Suite{
 		Dir:   dir,
@@ -71,16 +74,22 @@ func NewSuite(dir string) *Suite {
 	return c
 }
 
+// Suite implements the spec.Spec interface. Logically, a suite represents
+// a dataset directory, and map of subtests.
 type Suite struct {
 	Dir   string
 	name  string
 	specs map[string]specification
 }
 
+// Name returns the name of the Suite that is being ran.
 func (c *Suite) Name() string {
 	return c.name
 }
 
+// Seed will seed an InfluxDB instance with all of the data
+// in <dir>/data.lineprotocol files and returns the number of lines
+// that were written.
 func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 	f, err := os.Open(c.Dir + "/data.lineprotocol")
 	if err != nil {
@@ -122,6 +131,8 @@ func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 	}
 }
 
+// Test runs each of the specifications in the Suite. If an error is
+// encountered, then the error is written to stderr.
 func (c *Suite) Test(cfg write.ClientConfig) (err error) {
 	for _, s := range c.specs {
 		err = s.Test(cfg)
@@ -133,6 +144,7 @@ func (c *Suite) Test(cfg write.ClientConfig) (err error) {
 	return nil
 }
 
+// Teardown drops the database associated with a Suite.
 func (c *Suite) Teardown(cfg write.ClientConfig) error {
 	client := write.NewClient(cfg)
 	client.Create(fmt.Sprintf("DROP DATABASE %v", cfg.Database))
@@ -192,6 +204,8 @@ func (s *specification) Test(cfg write.ClientConfig) error {
 	return nil
 }
 
+// JSONEqual checks to see if two byte slices encode the same
+// underlying JSON object.
 func JSONEqual(l, r []byte) (bool, error) {
 	var li, ri interface{}
 	if err := json.Unmarshal(l, &li); err != nil {
