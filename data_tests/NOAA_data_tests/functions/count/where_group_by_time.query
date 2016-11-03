@@ -1,0 +1,1 @@
+SELECT COUNT("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-09-18T21:41:00Z' AND time <= '2015-09-18T22:41:00Z' GROUP BY time(30m)

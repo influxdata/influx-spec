@@ -1,0 +1,1 @@
+SHOW MEASUREMENTS WHERE "randtag" = '1'

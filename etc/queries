@@ -1,0 +1,114 @@
+SELECT * FROM "h2o_feet" LIMIT 3'
+
+All the same output
+SELECT * FROM "h2o_feet"
+SELECT "level description","location","water_level" FROM "h2o_feet"
+SELECT "level description"::field,"location"::tag,"water_level"::field FROM "h2o_feet"
+SELECT * FROM "NOAA_water_database"."autogen"."h2o_feet"
+
+SELECT "water_level" + 2 FROM "h2o_feet"
+
+SELECT ("water_level" * 2) + 4 from "h2o_feet"
+
+SELECT "water_level" FROM "h2o_feet" WHERE "location" = 'santa_monica'
+
+SELECT * FROM "h2o_feet" WHERE "location" !~ /./
+
+SELECT * FROM "h2o_feet" WHERE "location" =~ /./
+
+SELECT * FROM "h2o_feet" WHERE "location" = 'coyote_creek' AND  "water_level" > 8
+
+SELECT * FROM "h2o_feet" WHERE "location" = 'santa_monica' AND "level description" = 'below 3 feet'
+
+SELECT * FROM "h2o_feet" WHERE "water_level" + 2 > 11.9
+
+SELECT MEAN("water_level") FROM "h2o_feet" GROUP BY "location"
+
+SELECT MEAN("index") FROM "h2o_quality" GROUP BY *
+
+
+
+
+SELECT MEAN("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(6h)
+
+SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d)
+
+SELECT MEAN("water_level") FROM h2o_feet WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d) fill(-100)
+
+SELECT MEAN("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d) fill(none)
+
+SELECT "water_level" FROM "h2o_feet" GROUP BY * SLIMIT 1
+
+SELECT MEAN("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(24h) fill(none); SELECT COUNT("water_level") FROM "h2o_feet" WHERE time > now() - 2w GROUP BY "location",time(24h) fill(80)
+
+SELECT MEAN("water_level") FROM "h2o_feet"
+
+SELECT MEAN("water_level") FROM "h2o_feet" WHERE "location" = 'coyote_creek'
+
+
+
+SELECT "water_level" FROM "h2o_feet" WHERE time > '2015-08-18 23:00:01.232000000' AND time < '2015-09-19'
+
+SELECT "water_level" FROM "h2o_feet" WHERE time > '2015-09-18T21:24:00Z' + 6m
+
+SELECT "water_level" FROM "h2o_feet" WHERE time > '2015-08-18T23:00:01.232000000Z' AND time < '2015-09-19'
+
+SELECT * FROM "h2o_feet" WHERE time > 1388534400s
+
+SELECT * FROM "h2o_feet" WHERE time > 24043524m + 6m
+
+SELECT "water_level"::float FROM "h2o_feet" LIMIT 4
+
+SELECT "water_level"::integer FROM "h2o_feet" LIMIT 4
+
+SELECT "water_level"::string FROM "h2o_feet" LIMIT 4
+
+SELECT * FROM /.*/ LIMIT 1
+
+SELECT * FROM "average_temperature","h2o_feet","h2o_pH","h2o_quality","h2o_temperature" LIMIT 1
+
+SELECT * FROM /^h2o/ LIMIT 3
+
+SELECT * FROM /.*temperature.*/ LIMIT 5
+
+SELECT * FROM "h2o_feet" WHERE "location" !~ /.*a.*/ LIMIT 4
+
+SELECT * FROM "h2o_feet" WHERE ("location" =~ /.*y.*/ OR "location" =~ /.*m.*/) AND "water_level" > 0 LIMIT 4
+
+SELECT * FROM "h2o_feet" WHERE "location" =~ /[ym]/ AND "water_level" > 0 LIMIT 4
+
+
+
+
+SELECT STDDEV("water_level") FROM "h2o_feet"
+
+SELECT STDDEV("water_level") FROM "h2o_feet" WHERE time >= '2015-08-18T00:00:00Z' and time < '2015-09-18T12:06:00Z' GROUP BY time(1w), "location"
+
+
+SELECT MOVING_AVERAGE("water_level",2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z'
+
+SELECT MOVING_AVERAGE(MIN("water_level"),2) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
+
+
+
+SELECT DERIVATIVE("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' LIMIT 5
+
+SELECT DERIVATIVE("water_level",6m) FROM "h2o_feet" WHERE "location" = 'santa_monica' LIMIT 5
+
+SELECT DERIVATIVE("water_level",12m) FROM "h2o_feet" WHERE "location" = 'santa_monica' LIMIT 5
+
+SELECT DERIVATIVE(MAX("water_level")) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(12m)
+
+SELECT DERIVATIVE(SUM("water_level"),6m) FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(18m)
+
+
+
+
+SELECT PERCENTILE("water_level",5) FROM "h2o_feet" WHERE "location" = 'coyote_creek'
+
+SELECT PERCENTILE("water_level",5),"location" FROM "h2o_feet"
+
+SELECT PERCENTILE("water_level", 100) FROM "h2o_feet" GROUP BY "location"
+
+
+SELECT MEAN("water_level") AS "dream_name" FROM "h2o_feet"

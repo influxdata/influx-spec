@@ -1,0 +1,1 @@
+select * from average_temperature limit 10

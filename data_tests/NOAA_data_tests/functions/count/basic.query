@@ -1,0 +1,1 @@
+SELECT COUNT("water_level") FROM "h2o_feet"

@@ -1,0 +1,1 @@
+SELECT SUM(*) FROM "h2o_feet"

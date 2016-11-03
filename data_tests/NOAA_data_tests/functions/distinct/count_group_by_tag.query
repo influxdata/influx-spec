@@ -1,0 +1,1 @@
+SELECT COUNT(DISTINCT("level description")) FROM "h2o_feet" GROUP BY "location"
