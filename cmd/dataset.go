@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/influxdata/influx-spec/dataset"
 	"github.com/influxdata/influx-stress/write"
@@ -58,9 +59,10 @@ func runDataset(cmd *cobra.Command, args []string) {
 		}
 
 		fmt.Printf("Running Spec for %v\n", cat.Name())
-		err := cat.Test(cfg)
+		rs, err := cat.Test(cfg)
 		if err != nil {
 			fmt.Printf("Encountered Error: %v\n", err)
+			os.Exit(1)
 			return
 		}
 
@@ -69,8 +71,22 @@ func runDataset(cmd *cobra.Command, args []string) {
 			err := cat.Teardown(cfg)
 			if err != nil {
 				fmt.Printf("Encountered Error: %v\n", err)
+				os.Exit(1)
 				return
 			}
+		}
+
+		// TODO: add support for other formats
+		success := true
+		for _, r := range rs {
+			if !r.Pass {
+				success = false
+				fmt.Errorf("Query: %v\nExpected: \n%s\vGot: \n%s\n", r.Description, r.Expected, r.Got)
+			}
+		}
+
+		if !success {
+			os.Exit(1)
 		}
 	}
 

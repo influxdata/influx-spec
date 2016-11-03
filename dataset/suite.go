@@ -133,15 +133,15 @@ func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 
 // Test runs each of the specifications in the Suite. If an error is
 // encountered, then the error is written to stderr.
-func (c *Suite) Test(cfg write.ClientConfig) (err error) {
+func (c *Suite) Test(cfg write.ClientConfig) (rs spec.Results, err error) {
 	for _, s := range c.specs {
-		err = s.Test(cfg)
+		r, err := s.Test(cfg)
 		if err != nil {
-			fmt.Fprint(os.Stderr, err)
+			return nil, err
 		}
+		rs = append(rs, r...)
 	}
-
-	return nil
+	return
 }
 
 // Teardown drops the database associated with a Suite.
@@ -169,15 +169,15 @@ func (s *specification) Teardown(cfg write.ClientConfig) error {
 	return nil
 }
 
-func (s *specification) Test(cfg write.ClientConfig) error {
+func (s *specification) Test(cfg write.ClientConfig) (spec.Results, error) {
 	q, err := ioutil.ReadFile(s.QueryFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	exp, err := ioutil.ReadFile(s.ResultFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	vals := url.Values{}
@@ -186,7 +186,7 @@ func (s *specification) Test(cfg write.ClientConfig) error {
 	vals.Set("db", cfg.Database)
 	resp, err := http.PostForm(cfg.BaseURL+"/query", vals)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -194,14 +194,17 @@ func (s *specification) Test(cfg write.ClientConfig) error {
 
 	eq, err := JSONEqual(exp, got)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	if !eq {
-		return fmt.Errorf("Query: %v\nExpected: \n%s\vGot: \n%s\n", string(q), exp, got)
+	r := spec.Result{
+		Pass:        eq,
+		Description: string(q),
+		Expected:    string(exp),
+		Got:         string(got),
 	}
 
-	return nil
+	return spec.Results{r}, nil
 }
 
 // JSONEqual checks to see if two byte slices encode the same
