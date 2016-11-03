@@ -1,4 +1,4 @@
-package data
+package dataset
 
 import (
 	"bufio"
@@ -18,7 +18,10 @@ import (
 	"github.com/influxdata/influx-stress/write"
 )
 
-func GetDataDirs(root string) []string {
+// GetDatasetDirs walks the filesystem starting at path `root` looking for
+// directories that contain a data.lineprotocol file, returning a slice of all
+// the directories it comes across.
+func GetDatasetDirs(root string) []string {
 	var specs []string
 
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -31,10 +34,10 @@ func GetDataDirs(root string) []string {
 	return specs
 }
 
-func NewCategories(dirs []string, filter string) []spec.Spec {
+func NewSuites(dirs []string, filter string) []spec.Spec {
 	var cats []spec.Spec
 	for _, dir := range dirs {
-		cat := NewCategory(dir)
+		cat := NewSuite(dir)
 		if strings.Contains(cat.name, filter) {
 			cats = append(cats, cat)
 		}
@@ -42,8 +45,8 @@ func NewCategories(dirs []string, filter string) []spec.Spec {
 	return cats
 }
 
-func NewCategory(dir string) *Category {
-	c := &Category{
+func NewSuite(dir string) *Suite {
+	c := &Suite{
 		Dir:   dir,
 		name:  filepath.Base(dir),
 		specs: map[string]specification{},
@@ -68,17 +71,17 @@ func NewCategory(dir string) *Category {
 	return c
 }
 
-type Category struct {
+type Suite struct {
 	Dir   string
 	name  string
 	specs map[string]specification
 }
 
-func (c *Category) Name() string {
+func (c *Suite) Name() string {
 	return c.name
 }
 
-func (c *Category) Seed(cfg write.ClientConfig) (int, error) {
+func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 	f, err := os.Open(c.Dir + "/data.lineprotocol")
 	if err != nil {
 		return 0, err
@@ -119,7 +122,7 @@ func (c *Category) Seed(cfg write.ClientConfig) (int, error) {
 	}
 }
 
-func (c *Category) Test(cfg write.ClientConfig) (err error) {
+func (c *Suite) Test(cfg write.ClientConfig) (err error) {
 	for _, s := range c.specs {
 		err = s.Test(cfg)
 		if err != nil {
@@ -130,7 +133,7 @@ func (c *Category) Test(cfg write.ClientConfig) (err error) {
 	return nil
 }
 
-func (c *Category) Teardown(cfg write.ClientConfig) error {
+func (c *Suite) Teardown(cfg write.ClientConfig) error {
 	client := write.NewClient(cfg)
 	client.Create(fmt.Sprintf("DROP DATABASE %v", cfg.Database))
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/influxdata/influx-spec/data"
+	"github.com/influxdata/influx-spec/dataset"
 	"github.com/influxdata/influx-stress/write"
 	"github.com/spf13/cobra"
 )
@@ -16,21 +16,21 @@ var (
 )
 
 func init() {
-	dataCmd := &cobra.Command{
-		Use:   "data",
+	datasetCmd := &cobra.Command{
+		Use:   "dataset",
 		Short: "Run suite of tests to verify data ADD BETTER DESCRIPTION.",
-		Run:   runData,
+		Run:   runDataset,
 	}
 
-	RootCmd.AddCommand(dataCmd)
+	RootCmd.AddCommand(datasetCmd)
 
-	dataCmd.Flags().StringVarP(&filterStr, "filter", "f", "", "Run test that match this filter. Better description.")
-	dataCmd.Flags().StringVarP(&host, "host", "", "http://localhost:8086", "HTTP address for the InfluxDB instance.")
-	dataCmd.Flags().BoolVarP(&seed, "seed", "s", false, "Seed the InfluxDB instance with data.")
-	dataCmd.Flags().BoolVarP(&teardown, "teardown", "t", false, "Drop any databases associated with influx-spec.")
+	datasetCmd.Flags().StringVarP(&filterStr, "filter", "f", "", "Run test that match this filter. Better description.")
+	datasetCmd.Flags().StringVarP(&host, "host", "", "http://localhost:8086", "HTTP address for the InfluxDB instance.")
+	datasetCmd.Flags().BoolVarP(&seed, "seed", "s", false, "Seed the InfluxDB instance with data.")
+	datasetCmd.Flags().BoolVarP(&teardown, "teardown", "t", false, "Drop any databases associated with influx-spec.")
 }
 
-func runData(cmd *cobra.Command, args []string) {
+func runDataset(cmd *cobra.Command, args []string) {
 	if len(args) != 1 {
 		cmd.Usage()
 		return
@@ -38,9 +38,9 @@ func runData(cmd *cobra.Command, args []string) {
 
 	testDir := args[0]
 
-	dataDirs := data.GetDataDirs(testDir)
+	datasetDirs := dataset.GetDatasetDirs(testDir)
 
-	cats := data.NewCategories(dataDirs, filterStr)
+	cats := dataset.NewSuites(datasetDirs, filterStr)
 
 	for _, cat := range cats {
 		cfg := write.ClientConfig{
