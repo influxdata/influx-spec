@@ -81,7 +81,7 @@ func runDataset(cmd *cobra.Command, args []string) {
 		for _, r := range rs {
 			if !r.Pass {
 				success = false
-				fmt.Errorf("Query: %v\nExpected: \n%s\vGot: \n%s\n", r.Description, r.Expected, r.Got)
+				fmt.Fprintf(os.Stderr, "Query: %v\nExpected: \n%s\vGot: \n%s\n", r.Description, r.Expected, r.Got)
 			}
 		}
 
