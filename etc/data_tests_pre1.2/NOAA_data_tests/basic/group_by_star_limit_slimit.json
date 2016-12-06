@@ -1,0 +1,1 @@
+{"results":[{"series":[{"name":"h2o_feet","tags":{"location":"coyote_creek"},"columns":["time","water_level"],"values":[[1439856000000000000,8.12],[1439856360000000000,8.005],[1439856720000000000,7.887]]}]}]}

@@ -1,0 +1,1 @@
+SHOW TAG VALUES WITH KEY IN ("location","randtag") WHERE "randtag" =~ /./

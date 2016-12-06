@@ -1,0 +1,1 @@
+SELECT COUNT("water_level") FROM "h2o_feet" WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND "location"='coyote_creek' GROUP BY time(3d,1d)

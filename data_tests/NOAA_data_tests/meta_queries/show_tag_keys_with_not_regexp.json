@@ -1,1 +1,1 @@
-{"results":[{"series":[{"name":"h2o_quality","columns":["key","value"],"values":[["randtag","1"],["randtag","2"],["randtag","3"]]}]}]}
+{"results":[{"statement_id":0,"series":[{"name":"h2o_quality","columns":["key","value"],"values":[["randtag","1"],["randtag","2"],["randtag","3"]]}]}]}

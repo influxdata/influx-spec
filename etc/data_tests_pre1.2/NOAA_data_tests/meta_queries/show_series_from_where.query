@@ -1,0 +1,1 @@
+SHOW SERIES FROM "h2o_quality" WHERE "location" = 'coyote_creek'
