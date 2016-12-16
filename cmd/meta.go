@@ -93,7 +93,7 @@ func (m metaFlags) specs() []spec.Spec {
 	}
 
 	if m.user {
-		s = append(s, meta.User{})
+		s = append(s, meta.NewUser())
 	}
 
 	return s
