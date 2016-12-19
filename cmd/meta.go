@@ -22,8 +22,8 @@ func init() {
 	RootCmd.AddCommand(metaCmd)
 
 	metaCmd.Flags().StringVarP(&host, "host", "", "http://localhost:8086", "HTTP address for the InfluxDB instance.")
-	metaCmd.Flags().BoolVarP(&mf.rp, "rp", "", false, "Run retention policy tests")
-	metaCmd.Flags().BoolVarP(&mf.user, "user", "", false, "Run user tests")
+	metaCmd.Flags().BoolVarP(&mf.rp, "dbrp", "", false, "Verify that you can create/destroy databases and retention policies.")
+	metaCmd.Flags().BoolVarP(&mf.user, "user", "", false, "Verify that you can create/modify/destroy users.")
 }
 
 func runMeta(cmd *cobra.Command, args []string) {
