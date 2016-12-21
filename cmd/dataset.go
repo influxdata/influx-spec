@@ -19,13 +19,13 @@ var (
 func init() {
 	datasetCmd := &cobra.Command{
 		Use:   "dataset",
-		Short: "Run suite of tests to verify data ADD BETTER DESCRIPTION.",
+		Short: "Run suite of tests to verify that queries return expected results.",
 		Run:   runDataset,
 	}
 
 	RootCmd.AddCommand(datasetCmd)
 
-	datasetCmd.Flags().StringVarP(&filterStr, "filter", "f", "", "Run test that match this filter. Better description.")
+	datasetCmd.Flags().StringVarP(&filterStr, "filter", "f", "", "Filter which tests are actually ran.")
 	datasetCmd.Flags().StringVarP(&host, "host", "", "http://localhost:8086", "HTTP address for the InfluxDB instance.")
 	datasetCmd.Flags().BoolVarP(&seed, "seed", "s", false, "Seed the InfluxDB instance with data.")
 	datasetCmd.Flags().BoolVarP(&teardown, "teardown", "t", false, "Drop any databases associated with influx-spec.")
@@ -54,6 +54,7 @@ func runDataset(cmd *cobra.Command, args []string) {
 			pointsN, err := cat.Seed(cfg)
 			if err != nil {
 				fmt.Printf("Encountered Error: %v\nWrote %v points\n", err, pointsN)
+				os.Exit(1)
 				return
 			}
 		}
