@@ -1,0 +1,1 @@
+{"results":[{"statement_id":0,"series":[{"name":"h2o_feet","tags":{"location":"coyote_creek"},"columns":["time","sum_derivative"],"values":[[0,-0.4950000000000001]]},{"name":"h2o_feet","tags":{"location":"santa_monica"},"columns":["time","sum_derivative"],"values":[[0,-0.043999999999999595]]}]}]}
