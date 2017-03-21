@@ -1,3 +1,9 @@
+# Build process
+```
+glide install
+go install $(glide nv)
+```
+
 # InfluxDB Specification Tool
 `influx-spec` is a tool for confirming that an InfluxDB instance satisties the InfluxDB specification.
 

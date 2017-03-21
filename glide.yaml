@@ -1,0 +1,7 @@
+package: github.com/influxdata/influx-spec
+import:
+- package: github.com/influxdata/influx-stress
+  subpackages:
+  - write
+- package: github.com/influxdata/influxdb-client
+- package: github.com/spf13/cobra

@@ -1,0 +1,28 @@
+hash: 21bd587c03884193d10fde10d22dad03f8e8d4fde25e58c97dc6b57247a01a91
+updated: 2017-03-21T10:46:49.686303722-07:00
+imports:
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/influxdata/influx-stress
+  version: 07f1fcca984f34514d63aa0673b28cca4abd3e1f
+  subpackages:
+  - write
+- name: github.com/influxdata/influxdb-client
+  version: 96bddfb3b1c384b49860b25caa57455c1a16232b
+- name: github.com/klauspost/compress
+  version: 14eb9c4951195779ecfbec34431a976de7335b0a
+  subpackages:
+  - flate
+  - gzip
+  - zlib
+- name: github.com/klauspost/cpuid
+  version: 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+- name: github.com/klauspost/crc32
+  version: cb6bfca970f6908083f26f39a79009d608efd5cd
+- name: github.com/spf13/cobra
+  version: 7be4beda01ec05d0b93d80b3facd2b6f44080d94
+- name: github.com/spf13/pflag
+  version: 7b17cc4658ef5ca157b986ea5c0b43af7938532b
+- name: github.com/valyala/fasthttp
+  version: fcba2aa2f2a878517d0084ba29fcf5c09940dbb5
+devImports: []

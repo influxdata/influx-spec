@@ -110,7 +110,7 @@ func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 
 		line, err := r.ReadBytes('\n')
 		if err == io.EOF {
-			if _, _, err := client.Send(buf.Bytes()); err != nil {
+			if _, _, _, err := client.Send(buf.Bytes()); err != nil {
 				return ctr, err
 			}
 			return ctr, nil
@@ -123,7 +123,7 @@ func (c *Suite) Seed(cfg write.ClientConfig) (int, error) {
 		buf.Write(line)
 
 		if ctr%5000 == 0 {
-			if _, _, err := client.Send(buf.Bytes()); err != nil {
+			if _, _, _, err := client.Send(buf.Bytes()); err != nil {
 				return ctr, err
 			}
 			buf.Reset()
